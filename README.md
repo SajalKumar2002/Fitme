@@ -2,6 +2,7 @@
 <p>A MERN stack Project Fitness advising features, suggesting a plan to workout for every individual, help start a new person to achieve its goal with some simple steps.
 </p>
 <br />
+<h3>User</h3>
 <p>Create a profile and track your body composition from that day. It has sessions authentication technique's to provide security, a forgot password, otp verification from their email address.</p>
 <br />
 <h3>Admin</h3>
