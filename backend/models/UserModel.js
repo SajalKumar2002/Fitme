@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const passport = require("passport")
-const passportLocalMongoose = require("passport-local-mongoose")
 
 const UserSchema = new mongoose.Schema({
     email: {
@@ -8,7 +6,11 @@ const UserSchema = new mongoose.Schema({
         trim: true,
         unique: true
     },
-    name: String,
+    name: {
+        type: String,
+        trim: true,
+        default: () => this.email.subString(0, this.email.indexOf("@"))
+    },
     avatar: [
         {
             public_id: {
@@ -20,25 +22,25 @@ const UserSchema = new mongoose.Schema({
         }
     ],
     role: {
-        type: String
+        type: String,
+        enum: ['user', 'admin', 'trainer'],
+        default: 'user'
     },
     password: {
         type: String
     },
-    createdAt: {
-        type: Date,
-        default: function () {
-            return new Date()
-        }
+    gender: {
+        type: String,
+        enum: ['male', 'female'],
     },
-    gender: String,
     age: Number,
-    height: String,
-    weight: String,
-    targetWeight: String,
-    weeklyGoal: String,
-    activityLevel: String,
-    token: { type: String },
+    height: { type: Number },
+    weight: { type: Number },
+    targetWeight: { type: Number },
+    activityLevel: {
+        type: String,
+        enum: ['low', 'medium', 'high'],
+    },
     otp: {
         type: Number
     },
@@ -50,21 +52,7 @@ const UserSchema = new mongoose.Schema({
     { timestamps: true }
 )
 
-UserSchema.plugin(passportLocalMongoose);
 
 const UserModel = mongoose.model("User", UserSchema);
-
-passport.use(UserModel.createStrategy());
-
-passport.serializeUser(function (user, done) {
-    done(null, user._id);
-});
-
-passport.deserializeUser(function (username, done) {
-    const user = UserModel.findOne({ email: username })
-    if (user) {
-        done(null, user);
-    }
-})
 
 module.exports = UserModel;

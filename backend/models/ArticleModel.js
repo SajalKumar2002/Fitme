@@ -9,6 +9,7 @@ const ArticleSchema = new Schema({
     },
     readBy: Number,
     LikedBy: Number,
+    rated: Number,
     images: [
         {
             public_id: {
